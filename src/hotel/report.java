@@ -235,7 +235,7 @@ public class report extends javax.swing.JFrame {
             
             st=connection.createStatement();
             String ins="SELECT * FROM customer\n" +
-            "WHERE \"BookingDate\" = '"+checkinDate1+"'\n" + "ORDER BY TIME('%H:%M',bookingtime) asc;";
+            "WHERE \"BookingDate\" = '"+checkinDate1+"'\n" + "ORDER BY roomnumber,TIME('%H:%M',bookingtime) asc;";
             
             //st.executeQuery(ins);
             ResultSet rs = st.executeQuery(ins);
