@@ -777,13 +777,24 @@ contact.setText("na");
 
     private void existingMemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_existingMemberMouseClicked
         
-        Statement st = null;
+        Statement st = null,st1 = null;
         String name1 = existingMember.getSelectedValue();
         String contact1 = contact.getText();
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
             Class.forName("org.sqlite.JDBC"); 
+            String ins1 = "SELECT bookingdate, bookingtime FROM customer\n" +
+            "WHERE \"Name\" = '"+name1+"';";
+            
+            st1 = connection.createStatement();
+            ResultSet rs1 = st1.executeQuery(ins1);
+            String date = "";
+            String Time = "";
+            while(rs1.next()){
+                date= rs1.getString("bookingdate");
+                Time= rs1.getString("bookingtime");
+            }
             String ins="SELECT * FROM customer\n" +
-            "WHERE \"Name\" = '"+name1+"' AND \"Contact\"='"+contact1+"';";
+            "WHERE \"bookingdate\" = '"+date+"' AND \"bookingtime\"='"+Time+"' AND \"Name\" = '"+name1+"';";
             st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
@@ -890,19 +901,31 @@ contact.setText("na");
     }//GEN-LAST:event_fathernameActionPerformed
 
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
-        PreparedStatement ps=null;
+        PreparedStatement ps=null,ps1;
         Statement st = null;
         String contact1 = contact.getText();
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
             Class.forName("org.sqlite.JDBC");
-            String ins="SELECT DISTINCT name FROM customer\n" +
+            String ins="SELECT bookingdate, bookingtime FROM customer\n" +
             "WHERE \"Contact\" = '"+contact1+"';";
             ps = connection.prepareStatement(ins);
             //st.executeQuery(ins);
             ResultSet rs = ps.executeQuery();
-            DefaultListModel listModel1 = new DefaultListModel();
+            String date = "";
+            String Time = "";
             while(rs.next()){
-                String data= rs.getString("Name");
+                date= rs.getString("bookingdate");
+                Time= rs.getString("bookingtime");
+            }
+            String ins1="SELECT DISTINCT name FROM customer\n" +
+            "WHERE \"bookingdate\" = '"+date+"' and \"bookingtime\" = '"+Time+"';";
+            ps1 = connection.prepareStatement(ins1);
+            //st.executeQuery(ins);
+            ResultSet rs1 = ps1.executeQuery();
+            
+            DefaultListModel listModel1 = new DefaultListModel();
+            while(rs1.next()){
+                String data= rs1.getString("Name");
                 listModel1.addElement(data);
             }
             existingMember.setModel(listModel1);
