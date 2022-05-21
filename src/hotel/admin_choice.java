@@ -918,7 +918,7 @@ contact.setText("na");
                 Time= rs.getString("bookingtime");
             }
             String ins1="SELECT DISTINCT name FROM customer\n" +
-            "WHERE \"bookingdate\" = '"+date+"' and \"bookingtime\" = '"+Time+"';";
+            "WHERE \"Contact\" = '"+contact1+"';";
             ps1 = connection.prepareStatement(ins1);
             //st.executeQuery(ins);
             ResultSet rs1 = ps1.executeQuery();
