@@ -906,17 +906,6 @@ contact.setText("na");
         String contact1 = contact.getText();
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
             Class.forName("org.sqlite.JDBC");
-            String ins="SELECT bookingdate, bookingtime FROM customer\n" +
-            "WHERE \"Contact\" = '"+contact1+"';";
-            ps = connection.prepareStatement(ins);
-            //st.executeQuery(ins);
-            ResultSet rs = ps.executeQuery();
-            String date = "";
-            String Time = "";
-            while(rs.next()){
-                date= rs.getString("bookingdate");
-                Time= rs.getString("bookingtime");
-            }
             String ins1="SELECT DISTINCT name FROM customer\n" +
             "WHERE \"Contact\" = '"+contact1+"';";
             ps1 = connection.prepareStatement(ins1);
