@@ -527,6 +527,11 @@ contact.setText("na");
         fathername.setText("");
     }
     private void checkInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkInActionPerformed
+        String room1 = roomComboBox.getSelectedItem().toString();
+if(room1=="0"){
+JOptionPane.showMessageDialog(this, "Select Room Number");
+}
+else{
         try {
             Class.forName("org.sqlite.JDBC");
         } catch (ClassNotFoundException ex) {
@@ -594,7 +599,8 @@ contact.setText("na");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
             ex.printStackTrace();
-        }      
+        }
+}      
     }//GEN-LAST:event_checkInActionPerformed
     public void statusCheck() throws SQLException, ClassNotFoundException{
         Class.forName("org.sqlite.JDBC"); 
@@ -606,6 +612,7 @@ contact.setText("na");
                     "WHERE \"Status\"= '0'"
                     + "order by roomnumber asc;";
             ResultSet rs = st.executeQuery(ins);
+roomComboBox.addItem("0");
             while(rs.next()){
                 roomComboBox.addItem(rs.getString("RoomNumber"));
             }
