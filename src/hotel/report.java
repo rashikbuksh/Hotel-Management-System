@@ -292,10 +292,12 @@ public class report extends javax.swing.JFrame {
 
     private void printTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printTableActionPerformed
         reportName.setText("Hotel Bukshi LTD. Police Report of "+checkinDate.getText());
-        TableColumn tcol10 = jTable1.getColumnModel().getColumn(10);
-        jTable1.removeColumn(tcol10);
-        TableColumn tcol_img = jTable1.getColumnModel().getColumn(14);
-        jTable1.removeColumn(tcol_img);
+        //TableColumn tcol0 = jTable1.getColumnModel().getColumn(0);
+        //jTable1.removeColumn(tcol0);
+        //TableColumn tcol9 = jTable1.getColumnModel().getColumn(9);
+        //jTable1.removeColumn(tcol9);
+        //TableColumn tcol_img = jTable1.getColumnModel().getColumn(14);
+        //jTable1.removeColumn(tcol_img);
         jTable1.getTableHeader().setFont(new Font("Segoe UI", 1 , 25));
         jTable1.setFont(new Font("Serif", Font.PLAIN, 25));
         String path = "D:\\Police Report\\";
@@ -313,34 +315,34 @@ public class report extends javax.swing.JFrame {
             lineSpacing = 3f;
             while(i<jTable1.getRowCount()){
                 PdfPTable table = new PdfPTable(3);
-                String j = jTable1.getValueAt(i,11).toString();
+                String j = jTable1.getValueAt(i,15).toString();
                 if(i-1<0){
                      Paragraph para2 = new Paragraph(
-                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,11)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,15)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                      doc.add(para2);
                 }
-                else if(j.equalsIgnoreCase(jTable1.getValueAt(i-1,11).toString())){
+                else if(j.equalsIgnoreCase(jTable1.getValueAt(i-1,15).toString())){
                     //no condition because of same room.
                 }
                 else{
                     Paragraph para2 = new Paragraph(
-                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,11)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,15)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                      doc.add(para2);
                 }
-                table.addCell(new Phrase(lineSpacing,"Name: "+jTable1.getValueAt(i,0),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Father/Husband Name: "+jTable1.getValueAt(i,14),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Contact: "+jTable1.getValueAt(i,1),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Nationality: "+jTable1.getValueAt(i,3),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Passport: "+jTable1.getValueAt(i,4),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Occupation: "+jTable1.getValueAt(i,5),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Age: "+jTable1.getValueAt(i,6),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Marital Status: "+jTable1.getValueAt(i,7),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Religion: "+jTable1.getValueAt(i,8),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Purpose: "+jTable1.getValueAt(i,9),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Name: "+jTable1.getValueAt(i,1),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Father/Husband Name: "+jTable1.getValueAt(i,2),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Contact: "+jTable1.getValueAt(i,3),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Nationality: "+jTable1.getValueAt(i,8),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Passport: "+jTable1.getValueAt(i,5),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Occupation: "+jTable1.getValueAt(i,12),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Age: "+jTable1.getValueAt(i,7),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Marital Status: "+jTable1.getValueAt(i,11),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Religion: "+jTable1.getValueAt(i,14),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Purpose: "+jTable1.getValueAt(i,13),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                 table.addCell(new Phrase(lineSpacing,"Booking Time: "+jTable1.getValueAt(i,10),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"National ID Card: "+jTable1.getValueAt(i,12),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Address: "+jTable1.getValueAt(i,2),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Checkout Date: "+jTable1.getValueAt(i,13),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"National ID Card: "+jTable1.getValueAt(i,6),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Address: "+jTable1.getValueAt(i,4),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Checkout Date: "+jTable1.getValueAt(i,16),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                 table.addCell(new Phrase(lineSpacing," ",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                 doc.add(table);
                 Paragraph para3 = new Paragraph("\n");
@@ -360,8 +362,8 @@ public class report extends javax.swing.JFrame {
 
     private void normalPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_normalPrintActionPerformed
         reportName.setText("Hotel Bukshi LTD. Record Report of "+checkinDate.getText());
-        TableColumn tcol10 = jTable1.getColumnModel().getColumn(10);
-        jTable1.removeColumn(tcol10);
+        //TableColumn tcol10 = jTable1.getColumnModel().getColumn(10);
+        //jTable1.removeColumn(tcol10);
         jTable1.getTableHeader().setFont(new Font("Segoe UI", 1 , 18));
         jTable1.setFont(new Font("Serif", Font.BOLD, 18));
         String path = "D:\\Record Report\\";
@@ -382,32 +384,32 @@ public class report extends javax.swing.JFrame {
                 String j = jTable1.getValueAt(i,11).toString();
                 if(i-1<0){
                      Paragraph para2 = new Paragraph(
-                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,11)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,15)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                      doc.add(para2);
                 }
-                else if(j.equalsIgnoreCase(jTable1.getValueAt(i-1,11).toString())){
+                else if(j.equalsIgnoreCase(jTable1.getValueAt(i-1,15).toString())){
                     //no condition because of same room.
                 }
                 else{
                     Paragraph para2 = new Paragraph(
-                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,11)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                        new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,15)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                      doc.add(para2);
                 }
-                table.addCell(new Phrase(lineSpacing,"Name: "+jTable1.getValueAt(i,0),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Father/Husband Name: "+jTable1.getValueAt(i,15),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Contact: "+jTable1.getValueAt(i,1),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Nationality: "+jTable1.getValueAt(i,3),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Passport: "+jTable1.getValueAt(i,4),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Occupation: "+jTable1.getValueAt(i,5),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Age: "+jTable1.getValueAt(i,6),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Marital Status: "+jTable1.getValueAt(i,7),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Religion: "+jTable1.getValueAt(i,8),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Purpose: "+jTable1.getValueAt(i,9),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Name: "+jTable1.getValueAt(i,1),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Father/Husband Name: "+jTable1.getValueAt(i,2),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Contact: "+jTable1.getValueAt(i,3),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Nationality: "+jTable1.getValueAt(i,8),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Passport: "+jTable1.getValueAt(i,5),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Occupation: "+jTable1.getValueAt(i,12),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Age: "+jTable1.getValueAt(i,7),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Marital Status: "+jTable1.getValueAt(i,11),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Religion: "+jTable1.getValueAt(i,14),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Purpose: "+jTable1.getValueAt(i,13),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
                 table.addCell(new Phrase(lineSpacing,"Booking Time: "+jTable1.getValueAt(i,10),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"National ID Card: "+jTable1.getValueAt(i,12),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Address: "+jTable1.getValueAt(i,2),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                table.addCell(new Phrase(lineSpacing,"Checkout Date: "+jTable1.getValueAt(i,13),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
-                String imageFile = "Image\\"+jTable1.getValueAt(i,14)+".jpg";
+                table.addCell(new Phrase(lineSpacing,"National ID Card: "+jTable1.getValueAt(i,6),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Address: "+jTable1.getValueAt(i,4),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                table.addCell(new Phrase(lineSpacing,"Checkout Date: "+jTable1.getValueAt(i,16),FontFactory.getFont(FontFactory.HELVETICA, fntSize)));
+                String imageFile = "Image\\"+jTable1.getValueAt(i,17)+".jpg";
                 com.itextpdf.text.Image image;
                 try{
                     image = com.itextpdf.text.Image.getInstance(imageFile);
