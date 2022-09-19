@@ -1,0 +1,13 @@
+### Copy Old Hotel DB to New Hotel DB
+Insert Into customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,CheckoutDate,imageInfo,fathername)
+Select * FROM Hotel.customer
+
+
+
+Old Hotel DB
+Tables:
+Customer Fields
+(name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,CheckoutDate,imageInfo,fathername)
+
+RoomAvailable
+(RoomNumber,member,contact,bookingdate,name)
