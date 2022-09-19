@@ -537,7 +537,7 @@ else{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
 
             int member1= member.getSelectedIndex()+1;
             String name1 = name.getText();
@@ -561,7 +561,7 @@ else{
             st=connection.createStatement();
             String imagename;
             imagename = imageInfo.getText();
-            String ins="INSERT INTO customer\n" +
+            String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername) \n" +
 "VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"');";
             st.executeUpdate(ins); 
             
@@ -604,7 +604,7 @@ else{
     }//GEN-LAST:event_checkInActionPerformed
     public void statusCheck() throws SQLException, ClassNotFoundException{
         Class.forName("org.sqlite.JDBC"); 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
 
             Statement st = null;
             st=connection.createStatement();
@@ -705,7 +705,7 @@ roomComboBox.addItem("0");
 
     private void takePictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takePictureActionPerformed
             Statement st = null;
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
                     Class.forName("org.sqlite.JDBC"); 
                    
                     String name_image;
@@ -726,7 +726,7 @@ roomComboBox.addItem("0");
             }catch(Exception e){
                 JOptionPane.showMessageDialog(this, "Error! Image not Captured");
             }
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
                 Class.forName("org.sqlite.JDBC"); 
             int member1 = member.getSelectedIndex()+1;
             /*if(member1>1){
@@ -759,7 +759,7 @@ roomComboBox.addItem("0");
        /* if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
                     
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
                     Class.forName("org.sqlite.JDBC"); 
                     Statement st = null;
                     grabber.start();
@@ -787,21 +787,19 @@ roomComboBox.addItem("0");
         Statement st = null,st1 = null;
         String name1 = existingMember.getSelectedValue();
         String contact1 = contact.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC"); 
-            String ins1 = "SELECT bookingdate, bookingtime FROM customer\n" +
+            String ins1 = "SELECT id FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"';";
             
             st1 = connection.createStatement();
             ResultSet rs1 = st1.executeQuery(ins1);
-            String date = "";
-            String Time = "";
+            String id = "";
             while(rs1.next()){
-                date= rs1.getString("bookingdate");
-                Time= rs1.getString("bookingtime");
+                id= rs1.getString("id");
             }
             String ins="SELECT * FROM customer\n" +
-            "WHERE \"bookingdate\" = '"+date+"' AND \"bookingtime\"='"+Time+"' AND \"Name\" = '"+name1+"';";
+            "WHERE \"id\" = "+id+";";
             st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
@@ -834,7 +832,7 @@ roomComboBox.addItem("0");
         String name1 = existingMember.getSelectedValue();
         System.out.println(name1);
         String contact1 = contact.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC"); 
             String ins="SELECT * FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"Contact\"='"+contact1+"';";
@@ -911,7 +909,7 @@ roomComboBox.addItem("0");
         PreparedStatement ps=null,ps1;
         Statement st = null;
         String contact1 = contact.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
             String ins1="SELECT DISTINCT name FROM customer\n" +
             "WHERE \"Contact\" = '"+contact1+"';";

@@ -231,7 +231,7 @@ public class report extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             
             st=connection.createStatement();
             String ins="SELECT * FROM customer\n" +

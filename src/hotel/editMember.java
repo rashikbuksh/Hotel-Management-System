@@ -456,7 +456,7 @@ public class editMember extends javax.swing.JFrame {
         roomnumber1 =(String) roomComboBox.getSelectedItem();
         String name1 = membersInARoom.getSelectedValue();
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
             String ins="SELECT * FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
@@ -511,7 +511,7 @@ public class editMember extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Statement st = null;
             st=connection.createStatement();
             String ins = "SELECT * FROM Room\n"+
@@ -531,7 +531,7 @@ public class editMember extends javax.swing.JFrame {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             String roomnumber1 =(String) roomComboBox.getSelectedItem();
             
 
@@ -596,7 +596,7 @@ public class editMember extends javax.swing.JFrame {
         PreparedStatement ps=null;
         PreparedStatement ps1=null;
         Statement st = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
             String ins1="SELECT name FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
@@ -702,7 +702,7 @@ public class editMember extends javax.swing.JFrame {
         /* if(evt.getKeyCode()==KeyEvent.VK_ENTER){
             OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
 
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
                 Class.forName("org.sqlite.JDBC");
                 Statement st = null;
                 grabber.start();
@@ -727,7 +727,7 @@ public class editMember extends javax.swing.JFrame {
 
     private void takePictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takePictureActionPerformed
         Statement st = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
 
             String name_image;

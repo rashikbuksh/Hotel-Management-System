@@ -266,7 +266,7 @@ public class roomChange extends javax.swing.JFrame {
     }//GEN-LAST:event_clearActionPerformed
 public void statusCheck() throws SQLException, ClassNotFoundException{
         Class.forName("org.sqlite.JDBC"); 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
 
             Statement st = null;
             st=connection.createStatement();
@@ -281,7 +281,7 @@ public void statusCheck() throws SQLException, ClassNotFoundException{
     }
 public void statuscheckfor1() throws ClassNotFoundException, SQLException{
     Class.forName("org.sqlite.JDBC"); 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
 
             Statement st = null;
             st=connection.createStatement();
@@ -301,7 +301,7 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Statement st;
             st=connection.createStatement();
             String ins="SELECT * FROM RoomAvailable";
@@ -393,7 +393,7 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
 
             st=connection.createStatement();
             String contact1 = contact.getText();
@@ -452,7 +452,7 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
                 String name1 = jList1.getSelectedValue();
                 //System.out.println(name1);
         
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel.db")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC"); 
             String ins="SELECT * FROM RoomAvailable\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"RoomNumber\"='"+roomnumber1+"';";
