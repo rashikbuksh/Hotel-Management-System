@@ -455,11 +455,15 @@ public class editMember extends javax.swing.JFrame {
         String roomnumber1;
         roomnumber1 =(String) roomComboBox.getSelectedItem();
         String name1 = membersInARoom.getSelectedValue();
+        String[] name_id = name1.split(",");
+        name1 = name_id[0];
+        String id1 = name_id[1];
+        System.out.println(name1 + "  " + id1);
 
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
             String ins="SELECT * FROM customer\n" +
-            "WHERE \"Name\" = '"+name1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
+            "WHERE \"id\" = '"+id1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
             st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
@@ -598,7 +602,7 @@ public class editMember extends javax.swing.JFrame {
         Statement st = null;
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
-            String ins1="SELECT name FROM RoomAvailable\n" +
+            String ins1="SELECT name, contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
             ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
@@ -611,7 +615,9 @@ public class editMember extends javax.swing.JFrame {
             DefaultListModel listModel1 = new DefaultListModel();
             while(rs1.next()){
                 String data= rs1.getString("name");
-                listModel1.addElement(data);
+                String contact = rs1.getString("contact");
+                String id = getID(data,roomnumber1,contact);
+                listModel1.addElement(data + "," + id);
                 //System.out.println(data);
             }
             membersInARoom.setModel(listModel1);
@@ -621,6 +627,25 @@ public class editMember extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_checkContactActionPerformed
 
+    public String getID(String name, String roomnumber, String contact){
+        String id = null;
+        PreparedStatement ps=null;
+        
+        
+        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
+            Class.forName("org.sqlite.JDBC");
+            String ins="SELECT id FROM customer\n" +
+            "WHERE \"Name\" = '"+name+"' AND \"Roomnumber\"='"+roomnumber+"' AND \"contact\"='"+contact+"';";
+            ps = connection.prepareStatement(ins);
+            ResultSet rs = ps.executeQuery();
+            id = rs.getString("id");
+        }
+        catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return id;
+    }
+    
     private void clearPartialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearPartialActionPerformed
         name.setText("");
         address.setText("");
