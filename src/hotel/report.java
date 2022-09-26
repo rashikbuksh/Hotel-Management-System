@@ -252,8 +252,8 @@ public class report extends javax.swing.JFrame {
             while(rs.next()){
                 jTable1.setRowHeight(100);
                 jTable1.getTableHeader().setReorderingAllowed(false);
-                Object valueat = jTable1.getValueAt(loop, 15); 
-                jTable1.getColumnModel().getColumn(15).setCellRenderer(new ImageRender(valueat));
+                Object valueat = jTable1.getValueAt(loop, 17); 
+                jTable1.getColumnModel().getColumn(17).setCellRenderer(new ImageRender(valueat));
                 loop++;
                 //loop++;
                 //System.out.println(rs.getRow());
