@@ -519,7 +519,6 @@ public class admin_choice extends javax.swing.JFrame {
     public void clean(){
         name.setText("");
         passportno.setText("");
-contact.setText("na");
         nationalid.setText("");
         nationality.setText("Bangladeshi");
         age.setText("");
