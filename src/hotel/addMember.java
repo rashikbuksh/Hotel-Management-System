@@ -588,7 +588,7 @@ public class addMember extends javax.swing.JFrame {
             int members1 = Integer.parseInt(member1);
             members1++;
             
-            String ins="INSERT INTO customer\n" +
+            String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername) \n" +
 "VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"');";
             st.executeUpdate(ins); 
             
@@ -641,11 +641,14 @@ public class addMember extends javax.swing.JFrame {
         Statement st = null;
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC");
-            String ins1="SELECT name,member FROM RoomAvailable\n" +
+            String ins1="SELECT name,member,contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
             ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
             member.setText(rs1.getString("member"));
+            contact.setText(rs1.getString("contact"));
+            nationality.setText("Bangladeshi");
+            religion.setSelectedItem("Muslim");
 
             /*ins="SELECT DISTINCT name FROM customer\n" +
             "WHERE \"name\" = '"+data1+"' AND \"Roomnumber\" = "+roomnumber1+";";
