@@ -554,13 +554,19 @@ public class editMember extends javax.swing.JFrame {
             String fathername1 = fathername.getText();
             
             String prename=membersInARoom.getSelectedValue();
+            
+            String[] name_id = prename.split(",");
+            String nameid1 = name_id[0];
+            String id1 = name_id[1];
+            System.out.println(nameid1 + "  " + id1);
+            
             String ins="UPDATE customer\n" +
             "SET \"name\"='"+name1+"', \"address\" ='"+address1+"', \"contact\" ='"+contact1+"', \"passportno\" ='"+passportno1+"', \"nationalid\" ='"+nationalid1+"', \"nationality\" ='"+nationality1+"', \"age\" ='"+age1+"', \"marital\" ='"+marital1+"', \"occupation\" ='"+occupation1+"', \"purpose\" ='"+purpose1+"', \"religion\" ='"+religion1+"', \"fathername\" ='"+fathername1+"' \n" +
-            "WHERE \"name\" = '"+prename+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+            "WHERE \"name\" = '"+nameid1+"' AND \"RoomNumber\"='"+roomnumber1+"' AND \"id\" = '"+id1+"';";
             
             String ins1="UPDATE RoomAvailable\n" +
             "SET \"name\"='"+name1+"', \"contact\" ='"+contact1+"'\n" +
-            "WHERE \"name\" = '"+prename+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+            "WHERE \"name\" = '"+nameid1+"' AND \"RoomNumber\"='"+roomnumber1+"';";
             
             st.executeUpdate(ins);
             st.executeUpdate(ins1);
@@ -764,13 +770,18 @@ public class editMember extends javax.swing.JFrame {
                 File output = new File("Image//"+name_image+".jpg");
                 ImageIO.write(img, "JPG", output);
                 String prename=membersInARoom.getSelectedValue();
+                
+                String[] name_id = prename.split(",");
+                String nameid1 = name_id[0];
+                String id1 = name_id[1];
+                System.out.println(nameid1 + "  " + id1);
 
                 String ins ="UPDATE customer\n"+
                 "SET \"ImageInfo\"='"+imageInfo.getText()+"'\n"+
-                "WHERE \"name\" = '"+prename+"';";
+                "WHERE \"name\" = '"+nameid1+"' AND \"id\" = '"+id1+"';";
                 st.executeUpdate(ins);
                 webcam.close();
-                JOptionPane.showMessageDialog(this, "Image Captured");
+                JOptionPane.showMessageDialog(this, "Image Saved");
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(this, "Error! Image not Captured");
