@@ -212,7 +212,7 @@ public class admin_choice extends javax.swing.JFrame {
         });
 
         occupation.setMaximumRowCount(6);
-        occupation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Occupation...", "Teacher", "Student ", "Player", "Farmer", "Living abroad", "Govt ser", "Private serv", "Bussiness", "Lawer", "Student", "Housewife", "Player ", "Other" }));
+        occupation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Occupation...", "Teacher", "Student ", "Player", "Farmer", "Living abroad", "Govt ser", "Private serv", "Bussiness", "Lawer", "Student", "Housewife", "Player ", "Driver", "Other" }));
         occupation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 occupationActionPerformed(evt);

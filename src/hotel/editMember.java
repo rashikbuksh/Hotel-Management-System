@@ -209,7 +209,7 @@ public class editMember extends javax.swing.JFrame {
             }
         });
 
-        occupation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Occupation...", "Teacher", "Student ", "Player", "Farmer", "Living abroad", "Govt ser", "Private serv", "Bussiness", "Lawer", "Student", "Housewife", "Player ", "Other" }));
+        occupation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Occupation...", "Teacher", "Student ", "Player", "Farmer", "Living abroad", "Govt ser", "Private serv", "Bussiness", "Lawer", "Student", "Housewife", "Player ", "Driver", "Other" }));
         occupation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 occupationActionPerformed(evt);
@@ -401,7 +401,6 @@ public class editMember extends javax.swing.JFrame {
                             .addComponent(updateDB))
                         .addGap(35, 35, 35))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap())))
         );

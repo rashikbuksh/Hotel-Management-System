@@ -224,7 +224,7 @@ public class addMember extends javax.swing.JFrame {
             }
         });
 
-        occupation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Occupation...", "Teacher", "Student ", "Player", "Farmer", "Living abroad", "Govt ser", "Private serv", "Bussiness", "Lawer", "Student", "Housewife", "Player ", "Other" }));
+        occupation.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Select Occupation...", "Teacher", "Student ", "Player", "Farmer", "Living abroad", "Govt ser", "Private serv", "Bussiness", "Lawer", "Student", "Housewife", "Player ", "Driver", "Other" }));
         occupation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 occupationActionPerformed(evt);

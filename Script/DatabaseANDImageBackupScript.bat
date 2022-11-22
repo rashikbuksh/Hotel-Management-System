@@ -1,0 +1,2 @@
+robocopy C:\Users\USER\Documents\NetBeansProjects\Hotel-Management-System\dist C:\Users\USER\Documents\NetBeansProjects\DB_backup
+robocopy C:\Users\USER\Documents\NetBeansProjects\Hotel-Management-System\dist\Image C:\Users\USER\Documents\NetBeansProjects\DB_backup\Image
