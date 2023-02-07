@@ -789,7 +789,7 @@ roomComboBox.addItem("0");
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
             Class.forName("org.sqlite.JDBC"); 
             String ins1 = "SELECT id FROM customer\n" +
-            "WHERE \"Name\" = '"+name1+"';";
+            "WHERE \"Name\" = '"+name1+"' and \"Contact\" = '"+contact1+"';";
             
             st1 = connection.createStatement();
             ResultSet rs1 = st1.executeQuery(ins1);
