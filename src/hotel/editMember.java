@@ -454,7 +454,7 @@ public class editMember extends javax.swing.JFrame {
         String roomnumber1;
         roomnumber1 =(String) roomComboBox.getSelectedItem();
         String name1 = membersInARoom.getSelectedValue();
-        String[] name_id = name1.split(",");
+        String[] name_id = name1.split(":-:");
         name1 = name_id[0];
         String id1 = name_id[1];
         System.out.println(name1 + "  " + id1);
@@ -480,6 +480,7 @@ public class editMember extends javax.swing.JFrame {
                 fathername.setText(rs.getString("fathername"));
                 bookingdate.setText(rs.getString("bookingdate"));
                 String photoname = rs.getString("ImageInfo");
+                jLabel10.setIcon(new ImageIcon("Image//"+photoname+".jpg"));
             }
         } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
@@ -554,7 +555,7 @@ public class editMember extends javax.swing.JFrame {
             
             String prename=membersInARoom.getSelectedValue();
             
-            String[] name_id = prename.split(",");
+            String[] name_id = prename.split(":-:");
             String nameid1 = name_id[0];
             String id1 = name_id[1];
             System.out.println(nameid1 + "  " + id1);
@@ -622,7 +623,7 @@ public class editMember extends javax.swing.JFrame {
                 String data= rs1.getString("name");
                 String contact = rs1.getString("contact");
                 String id = getID(data,roomnumber1,contact);
-                listModel1.addElement(data + "," + id);
+                listModel1.addElement(data + ":-:" + id);
                 //System.out.println(data);
             }
             membersInARoom.setModel(listModel1);
@@ -770,7 +771,7 @@ public class editMember extends javax.swing.JFrame {
                 ImageIO.write(img, "JPG", output);
                 String prename=membersInARoom.getSelectedValue();
                 
-                String[] name_id = prename.split(",");
+                String[] name_id = prename.split(":-:");
                 String nameid1 = name_id[0];
                 String id1 = name_id[1];
                 System.out.println(nameid1 + "  " + id1);
