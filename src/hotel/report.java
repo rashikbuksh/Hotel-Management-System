@@ -5,64 +5,45 @@
  */
 package hotel;
 
-import com.googlecode.javacv.cpp.opencv_core;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Element;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfImage;
-import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.image.BufferedImage;
-import java.awt.print.PageFormat;
-import java.awt.print.Paper;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.scene.control.Tab;
-import javafx.scene.image.Image;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintException;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.standard.Sides;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
 import net.proteanit.sql.DbUtils;
-import org.postgresql.largeobject.LargeObject;
-import org.postgresql.largeobject.LargeObjectManager;
 
 /**
  *
@@ -289,15 +270,45 @@ public class report extends javax.swing.JFrame {
             
         }
     }
+    
+    private void printPDF (String path, String fileName) throws PrintException, FileNotFoundException, IOException {
+        DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
+        PrintRequestAttributeSet patts = new HashPrintRequestAttributeSet();
+        patts.add(Sides.DUPLEX);
+        PrintService[] ps = PrintServiceLookup.lookupPrintServices(flavor, patts);
+        if (ps.length == 0) {
+            throw new IllegalStateException("No Printer found");
+        }
+        System.out.println("Available printers: " + Arrays.asList(ps));
+
+        PrintService myService = null;
+        for (PrintService printService : ps) {
+            if (printService.getName().equals("HP Ink Tank 310 series")) {
+                System.out.println(myService +"-" + printService);
+                myService = printService;
+                break;
+            }
+        }
+        System.out.println("my service: "+myService);
+
+        if (myService == null) {
+            throw new IllegalStateException("Printer not found");
+        }
+        FileInputStream fis;
+        if(path.equals("D:\\Police Report\\")){
+            fis = new FileInputStream("D:\\Police Report\\"+fileName);
+        }
+        else{
+            fis = new FileInputStream("D:\\Record Report\\"+fileName);
+        }
+        Doc pdfDoc = new SimpleDoc(fis, DocFlavor.INPUT_STREAM.AUTOSENSE, null);
+        DocPrintJob printJob = myService.createPrintJob();
+        printJob.print(pdfDoc, patts);
+        fis.close();
+    }
 
     private void printTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printTableActionPerformed
         reportName.setText("Hotel Bukshi LTD. Police Report of "+checkinDate.getText());
-        //TableColumn tcol0 = jTable1.getColumnModel().getColumn(0);
-        //jTable1.removeColumn(tcol0);
-        //TableColumn tcol9 = jTable1.getColumnModel().getColumn(9);
-        //jTable1.removeColumn(tcol9);
-        //TableColumn tcol_img = jTable1.getColumnModel().getColumn(14);
-        //jTable1.removeColumn(tcol_img);
         jTable1.getTableHeader().setFont(new Font("Segoe UI", 1 , 25));
         jTable1.setFont(new Font("Serif", Font.PLAIN, 25));
         String path = "D:\\Police Report\\";
@@ -353,6 +364,14 @@ public class report extends javax.swing.JFrame {
         }catch(Exception ex){
             ex.printStackTrace();
         }
+        try {
+            printPDF(path,checkinDate.getText()+".pdf");
+        } catch (PrintException ex) {
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_printTableActionPerformed
 
     private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
@@ -426,6 +445,13 @@ public class report extends javax.swing.JFrame {
             doc.close();
         }catch(Exception ex){
             ex.printStackTrace();
+        }
+        try {
+            printPDF(path,checkinDate.getText()+".pdf");
+        } catch (PrintException ex) {
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_normalPrintActionPerformed
     /**

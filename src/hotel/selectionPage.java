@@ -33,6 +33,7 @@ public class selectionPage extends javax.swing.JFrame {
     private void initComponents() {
 
         exit = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         bookingBar = new javax.swing.JMenu();
         checkinMenu = new javax.swing.JMenuItem();
@@ -55,6 +56,8 @@ public class selectionPage extends javax.swing.JFrame {
                 exitActionPerformed(evt);
             }
         });
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/hotel/Image/2019-06-04.jpg"))); // NOI18N
 
         bookingBar.setText("Booking");
         bookingBar.addActionListener(new java.awt.event.ActionListener() {
@@ -137,13 +140,15 @@ public class selectionPage extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 1315, Short.MAX_VALUE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(exit))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 724, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 718, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(exit))
         );
 
@@ -269,6 +274,7 @@ public class selectionPage extends javax.swing.JFrame {
     private javax.swing.JMenuItem editMember;
     private javax.swing.JButton exit;
     private javax.swing.JMenu getReport;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem roomChange;
