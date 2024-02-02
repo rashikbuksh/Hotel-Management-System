@@ -10,7 +10,6 @@
 
 **Technologies Used:**
   - Java
-  - [Include any additional technologies or frameworks used]
 
 **Achievements:**
   - Successfully delivered a tailored solution for Hotel Bukshi LTD, receiving positive feedback.
