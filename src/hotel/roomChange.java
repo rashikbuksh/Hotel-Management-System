@@ -10,6 +10,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -324,7 +326,8 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
                 while(rs.next()){
                     if(rs.getString("RoomNumber").equals(room)){
                         String data= rs.getString("Name");
-                        listModel1.addElement(data);
+                        String customer_id = rs.getString("customer_id");
+                        listModel1.addElement(data + ":-:" + customer_id);
                         /*opencv_core.IplImage image = cvLoadImage("D:\\EDU\\Programming\\Java Database Project\\Hotel Management(postgresql)\\Image\\"+rs.getString("ImageInfo")+".jpg");
                         System.out.println(rs.getString("ImageInfo"));
                         final CanvasFrame canvas = new CanvasFrame(rs.getString("Name"));
@@ -332,7 +335,7 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
                         
                     }
                 }
-                JOptionPane.showMessageDialog(this, "Information Found in Application");
+                JOptionPane.showMessageDialog(this, "Information Found");
                 jList1.setModel(listModel1);
             }
             else{
@@ -378,15 +381,25 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
     private void updateDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDBActionPerformed
         try (Connection connection = dbConnection.getConnection()) {
             Statement st=connection.createStatement();
+            DefaultListModel<String> model = (DefaultListModel<String>) jList1.getModel();
+            int size = model.getSize();
+            List<String> customer_id = new ArrayList<>();
+            for (int i = 0; i < size; i++) {
+                String value = model.getElementAt(i).split(":-:")[1];
+                customer_id.add(value);
+            }
+            System.out.println(customer_id);
             String contact1 = contact.getText();
             String roomnumber1 = roomComboBox.getSelectedItem().toString();
             String roomnumber2 = roomnumber.getSelectedItem().toString();
-            String ins="UPDATE customer SET  \"RoomNumber\"="+roomnumber1+" WHERE \"RoomNumber\"='"+roomnumber2+"';";
-            //st.executeQuery(ins);
-            st.executeUpdate(ins);
-            
-            String ins3="UPDATE RoomAvailable SET  \"RoomNumber\"="+roomnumber1+" WHERE \"RoomNumber\"='"+roomnumber2+"';";
-            st.executeUpdate(ins3);
+            // Update the customer table
+            for (String id : customer_id) {
+                String ins = "UPDATE customer SET \"RoomNumber\" = '" + roomnumber1 + "' WHERE id = " + id;
+                st.executeUpdate(ins);
+                
+                String ins3="UPDATE RoomAvailable SET  \"RoomNumber\"="+roomnumber1+" WHERE \"RoomNumber\"='"+roomnumber2+"' AND customer_id = "+id+";";
+                st.executeUpdate(ins3);
+            }
             
             
             
@@ -394,24 +407,7 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
             st.executeUpdate(ins1);
             String ins2="UPDATE Room SET Status='1' where RoomNumber="+roomnumber1+";";
             st.executeUpdate(ins2);
-            //preparedStmt = connection.prepareStatement(ins);
-            /*preparedStmt.setString (1, name1);
-            preparedStmt.setString (2, contact1);
-            preparedStmt.setString (3, address1);
-            preparedStmt.setString (4, nationality1);
-            preparedStmt.setString (5, passportno1);
-            preparedStmt.setString (6, nationalid1);
-            preparedStmt.setString (7, occupation1);
-            preparedStmt.setString (8, age1);
-            preparedStmt.setString (9, marital1);
-            preparedStmt.setString (10, religion1);
-            preparedStmt.setString (11, purpose1);
-            preparedStmt.setString (12, bookingdate1);
-            preparedStmt.setString (13, bookingtime1);
-            preparedStmt.setString (14, roomnumber1);
-            preparedStmt.execute();
-            */
-            //ResultSet resultSet = preparedStmt.executeQuery();
+            
             JOptionPane.showMessageDialog(this, "Information Added to Database");
             roomComboBox.removeAllItems();
             roomnumber.removeAllItems();
@@ -423,8 +419,6 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }//GEN-LAST:event_updateDBActionPerformed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked

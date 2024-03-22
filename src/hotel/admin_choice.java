@@ -558,16 +558,16 @@ public class admin_choice extends javax.swing.JFrame {
             String imagename;
             imagename = imageInfo.getText();
             
-            String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername) \n" +
-"VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"');";
+            String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername,member) \n" +
+"VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"',"+member1+");";
             st.executeUpdate(ins); 
             
             String upd="UPDATE Room SET Status=1 WHERE RoomNumber="+roomnumber1+"";
             st.executeUpdate(upd);
             
-            String mins = "INSERT INTO RoomAvailable\n" +
-"VALUES ("+roomnumber1+","+member1+" ,'"+contact1+"' ,'"+bookingdate1+"','"+name1+"');";
-            st.executeUpdate(mins);
+//            String mins = "INSERT INTO RoomAvailable\n" +
+//"VALUES ("+roomnumber1+","+member1+" ,'"+contact1+"' ,'"+bookingdate1+"','"+name1+"');";
+//            st.executeUpdate(mins);
             
             
             if(member1>1){
@@ -579,7 +579,7 @@ public class admin_choice extends javax.swing.JFrame {
                     "SET \"Status\"='1'\n" +
                     "WHERE \"RoomNumber\"='"+roomnumber1+"';";
                     st.executeUpdate(roomUpdate);
-                    JOptionPane.showMessageDialog(this, "Members Added");
+                    JOptionPane.showMessageDialog(this, "Thanks For Reservation");
                     
                     roomComboBox.removeAllItems();
                     clearActionPerformed(evt);
@@ -587,14 +587,17 @@ public class admin_choice extends javax.swing.JFrame {
                 }
             else{
                 i++;
+                JOptionPane.showMessageDialog(this, i + "/" + member1 + " Members Added");
             }
             if(web1==1){
                 webcam.close();
             }
-            JOptionPane.showMessageDialog(this, "Thanks For Reservation");
+            JOptionPane.showMessageDialog(this, "All Members Added. Thanks For Reservation");
         } catch (SQLException ex) {
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
         }   catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
                 Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
             }
 }      

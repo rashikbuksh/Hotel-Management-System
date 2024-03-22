@@ -1,0 +1,10 @@
+-- ADD member column in customer table
+ALTER TABLE customer ADD COLUMN member INT
+
+-- trigger for RoomAvaiable Entry
+CREATE TRIGGER customer_insert_trigger
+AFTER INSERT ON customer
+BEGIN
+    INSERT INTO RoomAvailable (RoomNumber, member, contact, bookingdate, name, customer_id) 
+    VALUES (NEW.RoomNumber, NEW.member, NEW.contact, NEW.bookingdate, NEW.name, NEW.id);
+END;

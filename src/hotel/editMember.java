@@ -593,22 +593,16 @@ public class editMember extends javax.swing.JFrame {
         String roomnumber1 =(String) roomComboBox.getSelectedItem();
         try (Connection connection = dbConnection.getConnection()) {
             
-            String ins1="SELECT name, contact FROM RoomAvailable\n" +
+            String ins1="SELECT customer_id, name, contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
             PreparedStatement ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
-
-            /*ins="SELECT DISTINCT name FROM customer\n" +
-            "WHERE \"name\" = '"+data1+"' AND \"Roomnumber\" = "+roomnumber1+";";
-            PreparedStatement ps = connection.prepareStatement(ins);
-            //st.executeQuery(ins);
-            ResultSet rs = ps.executeQuery();*/
+            
             DefaultListModel listModel1 = new DefaultListModel();
             while(rs1.next()){
+                String customer_id = rs1.getString("customer_id");
                 String data= rs1.getString("name");
-                String contact = rs1.getString("contact");
-                String id = getID(data,roomnumber1,contact);
-                listModel1.addElement(data + ":-:" + id);
+                listModel1.addElement(data + ":-:" + customer_id);
                 //System.out.println(data);
             }
             membersInARoom.setModel(listModel1);
@@ -617,22 +611,7 @@ public class editMember extends javax.swing.JFrame {
             Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_checkContactActionPerformed
-
-    public String getID(String name, String roomnumber, String contact){
-        String id = null;
-        try (Connection connection = dbConnection.getConnection()) {
-            String ins="SELECT id FROM customer\n" +
-            "WHERE \"Name\" = '"+name+"' AND \"Roomnumber\"='"+roomnumber+"' AND \"contact\"='"+contact+"';";
-            PreparedStatement ps = connection.prepareStatement(ins);
-            ResultSet rs = ps.executeQuery();
-            id = rs.getString("id");
-        }
-        catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return id;
-    }
-    
+   
     private void clearPartialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearPartialActionPerformed
         name.setText("");
         address.setText("");

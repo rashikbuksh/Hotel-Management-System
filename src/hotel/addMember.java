@@ -569,46 +569,34 @@ public class addMember extends javax.swing.JFrame {
             int members1 = Integer.parseInt(member1);
             members1++;
             
-            String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername) \n" +
-"VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"');";
+            String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername,member) \n" +
+"VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"',"+members1+");";
             st.executeUpdate(ins); 
             
-            String mins = "INSERT INTO RoomAvailable\n" +
-"VALUES ("+roomnumber1+","+members1+" ,'"+contact1+"' ,'"+bookingdate1+"','"+name1+"');";
-            st.executeUpdate(mins);
+//            String mins = "INSERT INTO RoomAvailable\n" +
+//"VALUES ("+roomnumber1+","+members1+" ,'"+contact1+"' ,'"+bookingdate1+"','"+name1+"');";
+//            st.executeUpdate(mins);
             
             JList<String> list = membersInARoom;
+            
             for(int i = 0; i< list.getModel().getSize();i++){
                 System.out.println(list.getModel().getElementAt(i));
                 String ins1="UPDATE RoomAvailable\n" +
                 "SET \"member\"='"+members1+"'\n" +
-                "WHERE \"name\" = '"+list.getModel().getElementAt(i)+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+                "WHERE \"customer_id\" = '"+list.getModel().getElementAt(i).split(":-:")[1]+"' AND \"RoomNumber\"='"+roomnumber1+"';";
                 st.executeUpdate(ins1);
+                String ins2="UPDATE customer\n" +
+                "SET \"member\"='"+members1+"'\n" +
+                "WHERE \"id\" = '"+list.getModel().getElementAt(i).split(":-:")[1]+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+                st.executeUpdate(ins2);
             }
             
             roomComboBox.removeAllItems();
             statusCheck_prime();
-            //preparedStmt = connection.prepareStatement(ins);
-            /*preparedStmt.setString (1, name1);
-            preparedStmt.setString (2, contact1);
-            preparedStmt.setString (3, address1);
-            preparedStmt.setString (4, nationality1);
-            preparedStmt.setString (5, passportno1);
-            preparedStmt.setString (6, nationalid1);
-            preparedStmt.setString (7, occupation1);
-            preparedStmt.setString (8, age1);
-            preparedStmt.setString (9, marital1);
-            preparedStmt.setString (10, religion1);
-            preparedStmt.setString (11, purpose1);
-            preparedStmt.setString (12, bookingdate1);
-            preparedStmt.setString (13, bookingtime1);
-            preparedStmt.setString (14, roomnumber1);
-            preparedStmt.execute();
-            */
-            //ResultSet resultSet = preparedStmt.executeQuery();
             JOptionPane.showMessageDialog(this, "Information Added to Database");
             clearActionPerformed(evt);
         } catch (SQLException | ClassNotFoundException ex) {
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
         }
     }//GEN-LAST:event_addActionPerformed
@@ -616,7 +604,7 @@ public class addMember extends javax.swing.JFrame {
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
         String roomnumber1 =(String) roomComboBox.getSelectedItem();
         try (Connection connection = dbConnection.getConnection()) {
-            String ins1="SELECT name,member,contact FROM RoomAvailable\n" +
+            String ins1="SELECT customer_id,name,member,contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
             PreparedStatement ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
@@ -632,8 +620,9 @@ public class addMember extends javax.swing.JFrame {
             ResultSet rs = ps.executeQuery();*/
             DefaultListModel listModel1 = new DefaultListModel();
             while(rs1.next()){
+                String customer_id = rs1.getString("customer_id");
                 String data= rs1.getString("name");
-                listModel1.addElement(data);
+                listModel1.addElement(data + ":-:" + customer_id);
                 //System.out.println(data);
             }
             membersInARoom.setModel(listModel1);
@@ -665,10 +654,13 @@ public class addMember extends javax.swing.JFrame {
 
     private void membersInARoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_membersInARoomMouseClicked
         String roomnumber1 =(String) roomComboBox.getSelectedItem();
-        String name1 = membersInARoom.getSelectedValue();
+        String prename = membersInARoom.getSelectedValue();
+        String[] name_id = prename.split(":-:");
+            String name1 = name_id[0];
+            String id1 = name_id[1];
         try (Connection connection = dbConnection.getConnection()) {
             String ins="SELECT * FROM customer\n" +
-            "WHERE \"Name\" = '"+name1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
+            "WHERE \"id\" = '"+id1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
@@ -756,7 +748,8 @@ public class addMember extends javax.swing.JFrame {
             BufferedImage img=webcam.getImage();
             if(img!=null){
                 Statement st=connection.createStatement();
-                name_image=name.getText()+bookingdate.getText();
+                long currentTimeMillis = System.currentTimeMillis();
+                name_image=name.getText()+currentTimeMillis;
                 imageInfo.setText(name_image);
                 File output = new File("Image//"+name_image+".jpg");
                 ImageIO.write(img, "JPG", output);

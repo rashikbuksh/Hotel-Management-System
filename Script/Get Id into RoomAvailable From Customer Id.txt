@@ -1,0 +1,10 @@
+ALTER TABLE RoomAvailable ADD COLUMN customer_id INT
+
+UPDATE RoomAvailable
+SET customer_id = (
+    SELECT c.id
+    FROM customer c
+    WHERE c.name = RoomAvailable.name
+    AND c.contact = RoomAvailable.contact
+    AND c.bookingdate = RoomAvailable.bookingdate
+)
