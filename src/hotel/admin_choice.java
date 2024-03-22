@@ -12,7 +12,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -29,6 +28,8 @@ public class admin_choice extends javax.swing.JFrame {
     int web1=0;
     /**
      * Creates new form home_page
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
     public admin_choice() throws SQLException, ClassNotFoundException {
         this.setTitle("Check In Page");
@@ -231,11 +232,6 @@ public class admin_choice extends javax.swing.JFrame {
         openCamera.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openCameraActionPerformed(evt);
-            }
-        });
-        openCamera.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                openCameraKeyPressed(evt);
             }
         });
 
@@ -533,16 +529,11 @@ public class admin_choice extends javax.swing.JFrame {
     }
     private void checkInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkInActionPerformed
         String room1 = roomComboBox.getSelectedItem().toString();
-if(room1=="0"){
-JOptionPane.showMessageDialog(this, "Select Room Number");
-}
-else{
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
+        if(room1=="0"){
+        JOptionPane.showMessageDialog(this, "Select Room Number");
         }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
+        else{
+        try (Connection connection = dbConnection.getConnection()) {
 
             int member1= member.getSelectedIndex()+1;
             String name1 = name.getText();
@@ -566,6 +557,7 @@ else{
             st=connection.createStatement();
             String imagename;
             imagename = imageInfo.getText();
+            
             String ins="INSERT INTO customer (name,contact,address,nationality,passportno,occupation,age,marital,religion,purpose,bookingdate,bookingtime,roomnumber,nationalid,checkoutdate,imageInfo,fathername) \n" +
 "VALUES ('"+name1+"', '"+contact1+"', '"+address1+"', '"+nationality1+"', '"+passportno1+"', '"+occupation1+"', "+age1+", '"+marital1+"', '"+religion1+"', '"+purpose1+"', '"+bookingdate1+"', '"+bookingtime1+"', "+roomnumber1+", '"+nationalid1+"', 'null','"+imagename+"','"+fathername1+"');";
             st.executeUpdate(ins); 
@@ -596,28 +588,25 @@ else{
             else{
                 i++;
             }
-                
             if(web1==1){
                 webcam.close();
             }
             JOptionPane.showMessageDialog(this, "Thanks For Reservation");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
-            ex.printStackTrace();
-        }
+        }   catch (ClassNotFoundException ex) {
+                Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
+            }
 }      
     }//GEN-LAST:event_checkInActionPerformed
     public void statusCheck() throws SQLException, ClassNotFoundException{
-        Class.forName("org.sqlite.JDBC"); 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-
-            Statement st = null;
-            st=connection.createStatement();
+        try (Connection connection = dbConnection.getConnection()) {
+            Statement st=connection.createStatement();
             String ins = "SELECT * FROM Room\n"+
                     "WHERE \"Status\"= '0'"
                     + "order by roomnumber asc;";
             ResultSet rs = st.executeQuery(ins);
-roomComboBox.addItem("0");
+            roomComboBox.addItem("0");
             while(rs.next()){
                 roomComboBox.addItem(rs.getString("RoomNumber"));
             }
@@ -670,9 +659,9 @@ roomComboBox.addItem("0");
         //webcam.setViewSize(new Dimension(176,144));
         webcam.open();
         boolean exit;
-        Thread web = null;
-        web = new Thread(){
+        Thread web = new Thread(){
             boolean ex= false;
+            @Override
             public void run(){
                 while(!ex){
                 Image image = webcam.getImage();
@@ -685,39 +674,18 @@ roomComboBox.addItem("0");
         
     }
     private void openCameraActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openCameraActionPerformed
-
-        
-        /*
-        Thread webcam;
-        webcam = new Thread(){
-            @Override
-            public void run(){
-                opencv_highgui.CvCapture capture = opencv_highgui.cvCreateCameraCapture(0);
-                opencv_highgui.cvSetCaptureProperty(capture, opencv_highgui.CV_CAP_PROP_FRAME_HEIGHT, 400);
-                opencv_highgui.cvSetCaptureProperty(capture, opencv_highgui.CV_CAP_PROP_FRAME_WIDTH, 400);
-                
-                opencv_core.IplImage grabbedImage= opencv_highgui.cvQueryFrame(capture);
-                CanvasFrame frame = new CanvasFrame("Webcam");
-                while(frame.isVisible() && (grabbedImage= opencv_highgui.cvQueryFrame(capture))!=null){
-                    frame.showImage(grabbedImage);
-                }
-            }
-        };
-        webcam.start();
-*/
-       openCam();
+        openCam();
     }//GEN-LAST:event_openCameraActionPerformed
 
     private void takePictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takePictureActionPerformed
-            Statement st = null;
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-                    Class.forName("org.sqlite.JDBC"); 
-                   
+            try (Connection connection = dbConnection.getConnection()) {
                     String name_image;
                     BufferedImage img=webcam.getImage();
                     if(img!=null){
-                    st=connection.createStatement();
-                    name_image=name.getText()+bookingdate.getText();
+                    Statement st=connection.createStatement();
+                    long currentTimeMillis = System.currentTimeMillis();
+                    name_image=name.getText()+currentTimeMillis;
+                    System.out.println(name_image);
                     imageInfo.setText(name_image);
                     File output = new File("Image//"+name_image+".jpg");
                     ImageIO.write(img, "JPG", output);
@@ -731,73 +699,19 @@ roomComboBox.addItem("0");
             }catch(Exception e){
                 JOptionPane.showMessageDialog(this, "Error! Image not Captured");
             }
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-                Class.forName("org.sqlite.JDBC"); 
-            int member1 = member.getSelectedIndex()+1;
-            /*if(member1>1){
-               clean();
-            }*/
-            //String roomnumber1 = roomComboBox.getSelectedItem().toString();
-            //System.out.println(roomnumber1);
-            /*if(i==member1){
-                    st =connection.createStatement();
-                    String roomUpdate = "UPDATE \"Room\"\n" +
-                    "SET \"Status\"='1'\n" +
-                    "WHERE \"RoomNumber\"='"+roomnumber1+"';";
-                    st.executeUpdate(roomUpdate);
-                    JOptionPane.showMessageDialog(this, "Members Added");
-                    
-                    roomComboBox.removeAllItems();
-                    clearActionPerformed(evt);
-                }
-                i++;
-                */
-                if(web1==1){
-                    webcam.close();
-                }
-            } catch (SQLException | ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            if(web1==1){
+                webcam.close();
+            }
     }//GEN-LAST:event_takePictureActionPerformed
 
-    private void openCameraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openCameraKeyPressed
-       /* if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
-                    
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-                    Class.forName("org.sqlite.JDBC"); 
-                    Statement st = null;
-                    grabber.start();
-                    String name_image;
-                    opencv_core.IplImage img=grabber.grab();
-                    if(img!=null){
-                    st=connection.createStatement();
-                    name_image=contact.getText();
-                    imageInfo.setText(name_image);
-                    cvSaveImage("Image\\"+imageInfo.getText()+".jpg",img);
-                    
-                    String ins ="UPDATE customer\n"+
-	"SET \"ImageInfo\"='"+imageInfo.getText()+"'\n"+
-	"WHERE \"Contact\"="+contact.getText()+";";
-                    st.executeUpdate(ins);
-                    }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-       }*/
-    }//GEN-LAST:event_openCameraKeyPressed
-
     private void existingMemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_existingMemberMouseClicked
-        
-        Statement st = null,st1 = null;
         String name1 = existingMember.getSelectedValue();
         String contact1 = contact.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC"); 
+        try (Connection connection = dbConnection.getConnection()) {
             String ins1 = "SELECT id FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"' and \"Contact\" = '"+contact1+"';";
             
-            st1 = connection.createStatement();
+            Statement st1 = connection.createStatement();
             ResultSet rs1 = st1.executeQuery(ins1);
             String id = "";
             while(rs1.next()){
@@ -805,7 +719,7 @@ roomComboBox.addItem("0");
             }
             String ins="SELECT * FROM customer\n" +
             "WHERE \"id\" = "+id+";";
-            st = connection.createStatement();
+            Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
                 name.setText(rs.getString("name"));
@@ -837,8 +751,8 @@ roomComboBox.addItem("0");
         String name1 = existingMember.getSelectedValue();
         System.out.println(name1);
         String contact1 = contact.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC"); 
+        try (Connection connection = dbConnection.getConnection()) {
+             
             String ins="SELECT * FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"Contact\"='"+contact1+"';";
             ps = connection.prepareStatement(ins);
@@ -898,9 +812,7 @@ roomComboBox.addItem("0");
     private void CheckoutPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CheckoutPageActionPerformed
         try {
             new CheckOut().setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
@@ -914,8 +826,8 @@ roomComboBox.addItem("0");
         PreparedStatement ps=null,ps1;
         Statement st = null;
         String contact1 = contact.getText();
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC");
+        try (Connection connection = dbConnection.getConnection()) {
+            
             String ins1="SELECT DISTINCT name FROM customer\n" +
             "WHERE \"Contact\" = '"+contact1+"';";
             ps1 = connection.prepareStatement(ins1);

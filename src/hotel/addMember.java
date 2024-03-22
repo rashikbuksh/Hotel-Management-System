@@ -10,7 +10,6 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -235,11 +234,6 @@ public class addMember extends javax.swing.JFrame {
                 openCameraActionPerformed(evt);
             }
         });
-        openCamera.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                openCameraKeyPressed(evt);
-            }
-        });
 
         takePicture.setText("Take Picture");
         takePicture.addActionListener(new java.awt.event.ActionListener() {
@@ -313,7 +307,6 @@ public class addMember extends javax.swing.JFrame {
                             .addComponent(fathername))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 274, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(add)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(Note, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -527,14 +520,8 @@ public class addMember extends javax.swing.JFrame {
         membersInARoom.setListData(new String[0]);
     }//GEN-LAST:event_clearActionPerformed
     public void statusCheck_prime() throws SQLException, ClassNotFoundException{
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Statement st = null;
-            st=connection.createStatement();
+        try (Connection connection = dbConnection.getConnection()) {
+            Statement st=connection.createStatement();
             String ins = "SELECT * FROM Room\n"+
                     "WHERE \"Status\"= '1'"
                     + "order by roomnumber asc;";
@@ -556,17 +543,10 @@ public class addMember extends javax.swing.JFrame {
         bookingtime.setText(hour+":"+min+":"+sec);
     }
     private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
-        Statement st = null;
-        PreparedStatement preparedStmt=null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
+        try (Connection connection = dbConnection.getConnection()) {
             String roomnumber1 =(String) roomComboBox.getSelectedItem();
 
-            st=connection.createStatement();
+            Statement st=connection.createStatement();
             String name1 = name.getText();
             String address1 = address.getText();
             String contact1 = contact.getText();
@@ -630,21 +610,15 @@ public class addMember extends javax.swing.JFrame {
             clearActionPerformed(evt);
         } catch (SQLException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
-            ex.printStackTrace();
         }
     }//GEN-LAST:event_addActionPerformed
 
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
-        String roomnumber1;
-        roomnumber1 =(String) roomComboBox.getSelectedItem();
-        PreparedStatement ps=null;
-        PreparedStatement ps1=null;
-        Statement st = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC");
+        String roomnumber1 =(String) roomComboBox.getSelectedItem();
+        try (Connection connection = dbConnection.getConnection()) {
             String ins1="SELECT name,member,contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
-            ps1 = connection.prepareStatement(ins1);
+            PreparedStatement ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
             member.setText(rs1.getString("member"));
             contact.setText(rs1.getString("contact"));
@@ -653,7 +627,7 @@ public class addMember extends javax.swing.JFrame {
 
             /*ins="SELECT DISTINCT name FROM customer\n" +
             "WHERE \"name\" = '"+data1+"' AND \"Roomnumber\" = "+roomnumber1+";";
-            ps = connection.prepareStatement(ins);
+            PreparedStatement ps = connection.prepareStatement(ins);
             //st.executeQuery(ins);
             ResultSet rs = ps.executeQuery();*/
             DefaultListModel listModel1 = new DefaultListModel();
@@ -690,16 +664,12 @@ public class addMember extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void membersInARoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_membersInARoomMouseClicked
-        Statement st = null;
-        String roomnumber1;
-        roomnumber1 =(String) roomComboBox.getSelectedItem();
+        String roomnumber1 =(String) roomComboBox.getSelectedItem();
         String name1 = membersInARoom.getSelectedValue();
-
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC");
+        try (Connection connection = dbConnection.getConnection()) {
             String ins="SELECT * FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
-            st = connection.createStatement();
+            Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
                 name.setText(rs.getString("name"));
@@ -766,9 +736,9 @@ public class addMember extends javax.swing.JFrame {
         //webcam.setViewSize(new Dimension(176,144));
         webcam.open();
         boolean exit;
-        Thread web = null;
-        web = new Thread(){
+        Thread web = new Thread(){
             boolean ex= false;
+            @Override
             public void run(){
                 while(!ex){
                 Image image = webcam.getImage();
@@ -780,42 +750,12 @@ public class addMember extends javax.swing.JFrame {
         web.start();
         
     }
-    private void openCameraKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_openCameraKeyPressed
-        /* if(evt.getKeyCode()==KeyEvent.VK_ENTER){
-            OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
-
-            try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-                Class.forName("org.sqlite.JDBC");
-                Statement st = null;
-                grabber.start();
-                String name_image;
-                opencv_core.IplImage img=grabber.grab();
-                if(img!=null){
-                    st=connection.createStatement();
-                    name_image=contact.getText();
-                    imageInfo.setText(name_image);
-                    cvSaveImage("Image\\"+imageInfo.getText()+".jpg",img);
-
-                        String ins ="UPDATE customer\n"+
-                        "SET \"ImageInfo\"='"+imageInfo.getText()+"'\n"+
-                        "WHERE \"Contact\"="+contact.getText()+";";
-                        st.executeUpdate(ins);
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }*/
-    }//GEN-LAST:event_openCameraKeyPressed
-
     private void takePictureActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_takePictureActionPerformed
-        Statement st = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC");
-
+        try (Connection connection = dbConnection.getConnection()) {
             String name_image;
             BufferedImage img=webcam.getImage();
             if(img!=null){
-                st=connection.createStatement();
+                Statement st=connection.createStatement();
                 name_image=name.getText()+bookingdate.getText();
                 imageInfo.setText(name_image);
                 File output = new File("Image//"+name_image+".jpg");
@@ -873,15 +813,11 @@ public class addMember extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new addMember().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(addMember.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(addMember.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new addMember().setVisible(true);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(addMember.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }

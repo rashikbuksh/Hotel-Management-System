@@ -5,26 +5,22 @@
  */
 package hotel;
 
-import com.googlecode.javacv.CanvasFrame;
-import com.googlecode.javacv.cpp.opencv_core;
-import static com.googlecode.javacv.cpp.opencv_highgui.cvLoadImage;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
-import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
 
 public class roomChange extends javax.swing.JFrame {
 
     /**
      * Creates new form home_page
+     * @throws java.lang.ClassNotFoundException
+     * @throws java.sql.SQLException
      */
     public roomChange() throws ClassNotFoundException, SQLException {
         this.setTitle("Room Change Page");
@@ -263,18 +259,15 @@ public class roomChange extends javax.swing.JFrame {
         try {
             statusCheck();
             statuscheckfor1();
-        } catch (SQLException ex) {
-            Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_clearActionPerformed
 public void statusCheck() throws SQLException, ClassNotFoundException{
-        Class.forName("org.sqlite.JDBC"); 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
+         
+        try (Connection connection = dbConnection.getConnection()) {
 
-            Statement st = null;
-            st=connection.createStatement();
+            Statement st=connection.createStatement();
             String ins = "SELECT * FROM Room\n"+
                     "WHERE \"Status\"= '0'"
                     + "order by roomnumber asc;";
@@ -285,11 +278,10 @@ public void statusCheck() throws SQLException, ClassNotFoundException{
         }
     }
 public void statuscheckfor1() throws ClassNotFoundException, SQLException{
-    Class.forName("org.sqlite.JDBC"); 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
+     
+        try (Connection connection = dbConnection.getConnection()) {
 
-            Statement st = null;
-            st=connection.createStatement();
+            Statement st=connection.createStatement();
             String ins = "SELECT * FROM Room\n"+
                     "WHERE \"Status\"= '1'"
                     + "order by roomnumber asc;";
@@ -301,14 +293,8 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
 }
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
         String room =roomnumber.getSelectedItem().toString();
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Statement st;
-            st=connection.createStatement();
+        try (Connection connection = dbConnection.getConnection()) {
+            Statement st=connection.createStatement();
             String ins="SELECT * FROM RoomAvailable";
             ResultSet rs=st.executeQuery(ins);
             DefaultListModel listModel1 = new DefaultListModel();
@@ -374,13 +360,12 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
             //ResultSet resultSet = preparedStmt.executeQuery();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Error Finding Data in Database");
-            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             statusCheck();
-        } catch (SQLException ex) {
-            Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_checkContactActionPerformed
@@ -391,16 +376,8 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
     }//GEN-LAST:event_backActionPerformed
 
     private void updateDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDBActionPerformed
-        Statement st = null;
-        PreparedStatement ps=null,ps1=null,ps2=null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-
-            st=connection.createStatement();
+        try (Connection connection = dbConnection.getConnection()) {
+            Statement st=connection.createStatement();
             String contact1 = contact.getText();
             String roomnumber1 = roomComboBox.getSelectedItem().toString();
             String roomnumber2 = roomnumber.getSelectedItem().toString();
@@ -451,17 +428,16 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
     }//GEN-LAST:event_updateDBActionPerformed
 
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
-        Statement st = null;
         String roomnumber1;
                 roomnumber1 =(String) roomnumber.getSelectedItem();
                 String name1 = jList1.getSelectedValue();
                 //System.out.println(name1);
         
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC"); 
+        try (Connection connection = dbConnection.getConnection()) {
+             
             String ins="SELECT * FROM RoomAvailable\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"RoomNumber\"='"+roomnumber1+"';";
-            st = connection.createStatement();
+            Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
             name.setText(rs.getString("name"));
@@ -515,15 +491,11 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
         //</editor-fold>
         //</editor-fold>
    
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new roomChange().setVisible(true);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (SQLException ex) {
-                    Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new roomChange().setVisible(true);
+            } catch (ClassNotFoundException | SQLException ex) {
+                Logger.getLogger(roomChange.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }

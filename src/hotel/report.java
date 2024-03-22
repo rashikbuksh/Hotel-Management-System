@@ -5,6 +5,7 @@
  */
 package hotel;
 
+import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
@@ -18,7 +19,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -205,16 +205,8 @@ public class report extends javax.swing.JFrame {
 
     private void getReportbtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getReportbtActionPerformed
         String checkinDate1 = checkinDate.getText();
-        Statement st = null;
-        
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            
-            st=connection.createStatement();
+        try (Connection connection = dbConnection.getConnection()) {
+            Statement st=connection.createStatement();
             String ins="SELECT * FROM customer\n" +
             "WHERE \"BookingDate\" = '"+checkinDate1+"'\n" + "ORDER BY roomnumber,TIME('%H:%M',bookingtime) asc;";
             
@@ -244,7 +236,8 @@ public class report extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Information Shown on Table");
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Problem on Database Server");
-            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_getReportbtActionPerformed
     private class ImageRender extends DefaultTableCellRenderer {
@@ -361,14 +354,12 @@ public class report extends javax.swing.JFrame {
                 i++;
             }
             doc.close();
-        }catch(Exception ex){
-            ex.printStackTrace();
+        }catch(DocumentException | FileNotFoundException ex){
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             printPDF(path,checkinDate.getText()+".pdf");
-        } catch (PrintException ex) {
-            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (PrintException | IOException ex) {
             Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -443,14 +434,12 @@ public class report extends javax.swing.JFrame {
                 i++;
             }
             doc.close();
-        }catch(Exception ex){
-            ex.printStackTrace();
+        }catch(DocumentException | FileNotFoundException ex){
+            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             printPDF(path,checkinDate.getText()+".pdf");
-        } catch (PrintException ex) {
-            Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (PrintException | IOException ex) {
             Logger.getLogger(report.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_normalPrintActionPerformed
@@ -482,10 +471,8 @@ public class report extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new report().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new report().setVisible(true);
         });
     }
     public void currentDate(){

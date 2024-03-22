@@ -6,7 +6,6 @@
 package hotel;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +21,8 @@ public class CheckOut extends javax.swing.JFrame {
 
     /**
      * Creates new form home_page
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
     public CheckOut() throws SQLException, ClassNotFoundException {
         this.setTitle("Check Out Page");
@@ -293,9 +294,9 @@ public class CheckOut extends javax.swing.JFrame {
                                         .addComponent(roomComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(checkContact)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel3)
-                                    .addComponent(marital, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(marital, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(Name)
                                 .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -410,9 +411,7 @@ public class CheckOut extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -430,25 +429,20 @@ public class CheckOut extends javax.swing.JFrame {
     private void checkInPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkInPageActionPerformed
         try {
             new admin_choice().setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
     }//GEN-LAST:event_checkInPageActionPerformed
 
     private void membersInARoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_membersInARoomMouseClicked
-        Statement st = null;
-        String roomnumber1;
-        roomnumber1 =(String) roomComboBox.getSelectedItem();
+        String roomnumber1 =(String) roomComboBox.getSelectedItem();
         String name1 = membersInARoom.getSelectedValue();
 
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC");
+        try (Connection connection = dbConnection.getConnection()) {
             String ins="SELECT * FROM customer\n" +
             "WHERE \"Name\" = '"+name1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
-            st = connection.createStatement();
+            Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
                 name.setText(rs.getString("name"));
@@ -466,6 +460,7 @@ public class CheckOut extends javax.swing.JFrame {
                 occupation.setText(rs.getString("occupation"));
                 fathername.setText(rs.getString("fathername"));
                 String photoname = rs.getString("ImageInfo");
+                System.out.println(rs.getString("id"));
                 ImageIcon imageicon = new ImageIcon(new ImageIcon("Image//"+photoname+".jpg").getImage().getScaledInstance(373, 423, java.awt.Image.SCALE_DEFAULT));
                 jLabel15.setIcon(imageicon);
             }
@@ -481,28 +476,17 @@ public class CheckOut extends javax.swing.JFrame {
     }//GEN-LAST:event_backActionPerformed
 
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
-        String roomnumber1;
-        roomnumber1 =(String) roomComboBox.getSelectedItem();
-        PreparedStatement ps=null;
-        PreparedStatement ps1=null;
-        Statement st = null;
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Class.forName("org.sqlite.JDBC");
-            String ins1="SELECT name FROM RoomAvailable\n" +
+        String roomnumber1 =(String) roomComboBox.getSelectedItem();
+        try (Connection connection = dbConnection.getConnection()) {
+            String ins1="SELECT name, contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
-            ps1 = connection.prepareStatement(ins1);
+            PreparedStatement ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
-
-            /*ins="SELECT DISTINCT name FROM customer\n" +
-            "WHERE \"name\" = '"+data1+"' AND \"Roomnumber\" = "+roomnumber1+";";
-            ps = connection.prepareStatement(ins);
-            //st.executeQuery(ins);
-            ResultSet rs = ps.executeQuery();*/
+            
             DefaultListModel listModel1 = new DefaultListModel();
             while(rs1.next()){
                 String data= rs1.getString("name");
                 listModel1.addElement(data);
-                //System.out.println(data);
             }
             membersInARoom.setModel(listModel1);
 
@@ -512,17 +496,10 @@ public class CheckOut extends javax.swing.JFrame {
     }//GEN-LAST:event_checkContactActionPerformed
 
     private void updateDBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDBActionPerformed
-        Statement st = null;
-        PreparedStatement preparedStmt=null;
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
+        try (Connection connection = dbConnection.getConnection()) {
             String roomnumber1 =(String) roomComboBox.getSelectedItem();
 
-            st=connection.createStatement();
+            Statement st=connection.createStatement();
             String checkoutdate = checkoutDate.getText();
             String contact1= contact.getText();
             String ins="UPDATE customer SET \"CheckoutDate\"='"+checkoutdate+"'\n" +"WHERE \"RoomNumber\"='"+roomnumber1+"'";
@@ -560,7 +537,6 @@ public class CheckOut extends javax.swing.JFrame {
             clearActionPerformed(evt);
         } catch (SQLException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
-            ex.printStackTrace();
         }
 
     }//GEN-LAST:event_updateDBActionPerformed
@@ -583,9 +559,7 @@ public class CheckOut extends javax.swing.JFrame {
         try {
             roomComboBox.removeAllItems();
             statusCheck_prime();
-        } catch (SQLException ex) {
-            Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
         }
         currentDate();
@@ -599,15 +573,9 @@ public class CheckOut extends javax.swing.JFrame {
     private void bookingdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bookingdateActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_bookingdateActionPerformed
-        public void statusCheck_prime() throws SQLException, ClassNotFoundException{
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(admin_choice.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try (Connection connection = DriverManager.getConnection("jdbc:sqlite:Hotel_new.db")) {
-            Statement st = null;
-            st=connection.createStatement();
+    public void statusCheck_prime() throws SQLException, ClassNotFoundException{
+        try (Connection connection = dbConnection.getConnection()) {
+            Statement st = connection.createStatement();
             String ins = "SELECT * FROM Room\n"+
                     "WHERE \"Status\"= '1'"
                     + "order by roomnumber asc;";
@@ -648,15 +616,11 @@ public class CheckOut extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
    
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new CheckOut().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        java.awt.EventQueue.invokeLater(() -> {
+            try {
+                new CheckOut().setVisible(true);
+            } catch (SQLException | ClassNotFoundException ex) {
+                Logger.getLogger(CheckOut.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
     }

@@ -159,9 +159,7 @@ public class selectionPage extends javax.swing.JFrame {
     private void checkinMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkinMenuActionPerformed
         try {
             new admin_choice().setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
@@ -170,9 +168,7 @@ public class selectionPage extends javax.swing.JFrame {
     private void checkoutMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutMenuActionPerformed
         try {
             new CheckOut().setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
@@ -189,9 +185,7 @@ public class selectionPage extends javax.swing.JFrame {
     private void roomChangeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_roomChangeActionPerformed
         try {
             new roomChange().setVisible(true);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
@@ -209,9 +203,7 @@ public class selectionPage extends javax.swing.JFrame {
     private void addMemberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMemberActionPerformed
         try {
             new addMember().setVisible(true);
-        } catch (SQLException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
@@ -221,9 +213,7 @@ public class selectionPage extends javax.swing.JFrame {
         try {
             new editMember().setVisible(true);
             this.setVisible(false);
-        } catch (SQLException ex) {
-            Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
+        } catch (SQLException | ClassNotFoundException ex) {
             Logger.getLogger(selectionPage.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_editMemberActionPerformed
@@ -257,10 +247,8 @@ public class selectionPage extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new selectionPage().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new selectionPage().setVisible(true);
         });
     }
 
