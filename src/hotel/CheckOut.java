@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JList;
 
 public class CheckOut extends javax.swing.JFrame {
 
@@ -437,11 +438,15 @@ public class CheckOut extends javax.swing.JFrame {
 
     private void membersInARoomMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_membersInARoomMouseClicked
         String roomnumber1 =(String) roomComboBox.getSelectedItem();
-        String name1 = membersInARoom.getSelectedValue();
+        String prename = membersInARoom.getSelectedValue();
+
+        String[] name_id = prename.split(":-:");
+        String name1 = name_id[0];
+        String id1 = name_id[1];
 
         try (Connection connection = dbConnection.getConnection()) {
             String ins="SELECT * FROM customer\n" +
-            "WHERE \"Name\" = '"+name1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
+            "WHERE \"id\" = '"+id1+"' AND \"Roomnumber\"='"+roomnumber1+"';";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){
@@ -478,7 +483,7 @@ public class CheckOut extends javax.swing.JFrame {
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
         String roomnumber1 =(String) roomComboBox.getSelectedItem();
         try (Connection connection = dbConnection.getConnection()) {
-            String ins1="SELECT name, contact FROM RoomAvailable\n" +
+            String ins1="SELECT customer_id, name, contact FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
             PreparedStatement ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
@@ -486,7 +491,8 @@ public class CheckOut extends javax.swing.JFrame {
             DefaultListModel listModel1 = new DefaultListModel();
             while(rs1.next()){
                 String data= rs1.getString("name");
-                listModel1.addElement(data);
+                String customer_id = rs1.getString("customer_id");
+                listModel1.addElement(data+":-:"+customer_id);
             }
             membersInARoom.setModel(listModel1);
 
@@ -502,37 +508,24 @@ public class CheckOut extends javax.swing.JFrame {
             Statement st=connection.createStatement();
             String checkoutdate = checkoutDate.getText();
             String contact1= contact.getText();
-            String ins="UPDATE customer SET \"CheckoutDate\"='"+checkoutdate+"'\n" +"WHERE \"RoomNumber\"='"+roomnumber1+"'";
+            JList<String> list = membersInARoom;
+            
+            for(int i = 0; i< list.getModel().getSize();i++){
+            String ins="UPDATE customer SET \"CheckoutDate\"='"+checkoutdate+"'\n" +"WHERE \"id\" = '"+list.getModel().getElementAt(i).split(":-:")[1]+"' AND \"RoomNumber\"='"+roomnumber1+"';";
             //st.executeQuery(ins);
             String mins = "DELETE FROM \"RoomAvailable\"\n" +
-            "WHERE \"RoomNumber\"='"+roomnumber1+"';";
+            "WHERE \"customer_id\" = '"+list.getModel().getElementAt(i).split(":-:")[1]+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+            st.executeUpdate(ins);
+            st.executeUpdate(mins);
+            }
+           
             String roomUpdate = "UPDATE \"Room\"\n" +
             "SET \"Status\"='0'\n" +
             "WHERE \"RoomNumber\"='"+roomnumber1+"';";
-            st.executeUpdate(ins);
-            st.executeUpdate(mins);
             st.executeUpdate(roomUpdate);
 
             roomComboBox.removeAllItems();
             statusCheck_prime();
-            //preparedStmt = connection.prepareStatement(ins);
-            /*preparedStmt.setString (1, name1);
-            preparedStmt.setString (2, contact1);
-            preparedStmt.setString (3, address1);
-            preparedStmt.setString (4, nationality1);
-            preparedStmt.setString (5, passportno1);
-            preparedStmt.setString (6, nationalid1);
-            preparedStmt.setString (7, occupation1);
-            preparedStmt.setString (8, age1);
-            preparedStmt.setString (9, marital1);
-            preparedStmt.setString (10, religion1);
-            preparedStmt.setString (11, purpose1);
-            preparedStmt.setString (12, bookingdate1);
-            preparedStmt.setString (13, bookingtime1);
-            preparedStmt.setString (14, roomnumber1);
-            preparedStmt.execute();
-            */
-            //ResultSet resultSet = preparedStmt.executeQuery();
             JOptionPane.showMessageDialog(this, "Information Added to Database");
             clearActionPerformed(evt);
         } catch (SQLException | ClassNotFoundException ex) {

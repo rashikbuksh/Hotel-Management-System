@@ -101,11 +101,6 @@
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="jPanel2">
-      <Properties>
-        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-          <Color blue="f0" green="f0" id="Control" palette="2" red="f0" type="palette"/>
-        </Property>
-      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">

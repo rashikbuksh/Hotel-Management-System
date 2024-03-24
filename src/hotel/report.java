@@ -391,7 +391,7 @@ public class report extends javax.swing.JFrame {
             lineSpacing = 3f;
             while(i<jTable1.getRowCount()){
                 PdfPTable table = new PdfPTable(4);
-                String j = jTable1.getValueAt(i,11).toString();
+                String j = jTable1.getValueAt(i,15).toString();
                 if(i-1<0){
                      Paragraph para2 = new Paragraph(
                         new Phrase(lineSpacing,"Room Number: "+jTable1.getValueAt(i,15)+"\n\n",FontFactory.getFont(FontFactory.HELVETICA, fntSize)));

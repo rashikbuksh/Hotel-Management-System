@@ -482,6 +482,7 @@ public class editMember extends javax.swing.JFrame {
                 occupation.setSelectedItem(rs.getString("occupation"));
                 fathername.setText(rs.getString("fathername"));
                 bookingdate.setText(rs.getString("bookingdate"));
+                imageInfo.setText(rs.getString("ImageInfo"));
                 String photoname = rs.getString("ImageInfo");
                 jLabel10.setIcon(new ImageIcon("Image//"+photoname+".jpg"));
             }

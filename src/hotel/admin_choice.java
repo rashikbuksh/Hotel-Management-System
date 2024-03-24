@@ -526,6 +526,7 @@ public class admin_choice extends javax.swing.JFrame {
         age.setText("");
         religion.setSelectedItem("Muslim");
         fathername.setText("");
+        imageInfo.setText("");
     }
     private void checkInActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkInActionPerformed
         String room1 = roomComboBox.getSelectedItem().toString();
@@ -586,8 +587,8 @@ public class admin_choice extends javax.swing.JFrame {
                     i=1;
                 }
             else{
-                i++;
                 JOptionPane.showMessageDialog(this, i + "/" + member1 + " Members Added");
+                i++;
             }
             if(web1==1){
                 webcam.close();
