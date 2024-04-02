@@ -443,6 +443,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="checkoutDate">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="occupation">
         </Component>

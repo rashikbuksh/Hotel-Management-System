@@ -424,13 +424,14 @@ public void statuscheckfor1() throws ClassNotFoundException, SQLException{
     private void jList1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jList1MouseClicked
         String roomnumber1;
                 roomnumber1 =(String) roomnumber.getSelectedItem();
-                String name1 = jList1.getSelectedValue();
-                //System.out.println(name1);
+                String name_id = jList1.getSelectedValue();
+                String name1 = name_id.split(":-:")[0];
+                String id = name_id.split(":-:")[1];
         
         try (Connection connection = dbConnection.getConnection()) {
              
             String ins="SELECT * FROM RoomAvailable\n" +
-            "WHERE \"Name\" = '"+name1+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+            "WHERE \"customer_id\" = '"+id+"' AND \"RoomNumber\"='"+roomnumber1+"';";
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(ins);
             while(rs.next()){

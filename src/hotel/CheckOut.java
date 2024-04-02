@@ -176,6 +176,8 @@ public class CheckOut extends javax.swing.JFrame {
 
         jLabel12.setText("Check Out Date");
 
+        checkoutDate.setEditable(false);
+
         back.setFont(new java.awt.Font("Arial", 1, 15)); // NOI18N
         back.setText("Back");
         back.addActionListener(new java.awt.event.ActionListener() {
@@ -483,7 +485,7 @@ public class CheckOut extends javax.swing.JFrame {
     private void checkContactActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkContactActionPerformed
         String roomnumber1 =(String) roomComboBox.getSelectedItem();
         try (Connection connection = dbConnection.getConnection()) {
-            String ins1="SELECT customer_id, name, contact FROM RoomAvailable\n" +
+            String ins1="SELECT customer_id, name FROM RoomAvailable\n" +
             "WHERE \"Roomnumber\" = "+roomnumber1+";";
             PreparedStatement ps1 = connection.prepareStatement(ins1);
             ResultSet rs1 = ps1.executeQuery();
@@ -507,14 +509,15 @@ public class CheckOut extends javax.swing.JFrame {
 
             Statement st=connection.createStatement();
             String checkoutdate = checkoutDate.getText();
-            String contact1= contact.getText();
             JList<String> list = membersInARoom;
+            String customer_id;
             
             for(int i = 0; i< list.getModel().getSize();i++){
-            String ins="UPDATE customer SET \"CheckoutDate\"='"+checkoutdate+"'\n" +"WHERE \"id\" = '"+list.getModel().getElementAt(i).split(":-:")[1]+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+            customer_id = list.getModel().getElementAt(i).split(":-:")[1];
+            String ins="UPDATE customer SET \"CheckoutDate\"='"+checkoutdate+"'\n" +"WHERE \"id\" = '"+customer_id+"' AND \"RoomNumber\"='"+roomnumber1+"';";
             //st.executeQuery(ins);
             String mins = "DELETE FROM \"RoomAvailable\"\n" +
-            "WHERE \"customer_id\" = '"+list.getModel().getElementAt(i).split(":-:")[1]+"' AND \"RoomNumber\"='"+roomnumber1+"';";
+            "WHERE \"customer_id\" = '"+customer_id+"' AND \"RoomNumber\"='"+roomnumber1+"';";
             st.executeUpdate(ins);
             st.executeUpdate(mins);
             }
@@ -526,7 +529,7 @@ public class CheckOut extends javax.swing.JFrame {
 
             roomComboBox.removeAllItems();
             statusCheck_prime();
-            JOptionPane.showMessageDialog(this, "Information Added to Database");
+            JOptionPane.showMessageDialog(this, roomnumber1 + " Members Checked Out.");
             clearActionPerformed(evt);
         } catch (SQLException | ClassNotFoundException ex) {
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");

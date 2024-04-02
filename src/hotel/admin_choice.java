@@ -580,11 +580,11 @@ public class admin_choice extends javax.swing.JFrame {
                     "SET \"Status\"='1'\n" +
                     "WHERE \"RoomNumber\"='"+roomnumber1+"';";
                     st.executeUpdate(roomUpdate);
-                    JOptionPane.showMessageDialog(this, "Thanks For Reservation");
                     
                     roomComboBox.removeAllItems();
                     clearActionPerformed(evt);
                     i=1;
+                    JOptionPane.showMessageDialog(this, "All Members Added. Thanks For Reservation");
                 }
             else{
                 JOptionPane.showMessageDialog(this, i + "/" + member1 + " Members Added");
@@ -593,7 +593,7 @@ public class admin_choice extends javax.swing.JFrame {
             if(web1==1){
                 webcam.close();
             }
-            JOptionPane.showMessageDialog(this, "All Members Added. Thanks For Reservation");
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error Inserting in Database");
@@ -709,18 +709,11 @@ public class admin_choice extends javax.swing.JFrame {
     }//GEN-LAST:event_takePictureActionPerformed
 
     private void existingMemberMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_existingMemberMouseClicked
+        String name_id = existingMember.getSelectedValue();
+        String id = name_id.split(":-:")[1];
         String name1 = existingMember.getSelectedValue();
         String contact1 = contact.getText();
         try (Connection connection = dbConnection.getConnection()) {
-            String ins1 = "SELECT id FROM customer\n" +
-            "WHERE \"Name\" = '"+name1+"' and \"Contact\" = '"+contact1+"';";
-            
-            Statement st1 = connection.createStatement();
-            ResultSet rs1 = st1.executeQuery(ins1);
-            String id = "";
-            while(rs1.next()){
-                id= rs1.getString("id");
-            }
             String ins="SELECT * FROM customer\n" +
             "WHERE \"id\" = "+id+";";
             Statement st = connection.createStatement();
@@ -832,7 +825,7 @@ public class admin_choice extends javax.swing.JFrame {
         String contact1 = contact.getText();
         try (Connection connection = dbConnection.getConnection()) {
             
-            String ins1="SELECT DISTINCT name FROM customer\n" +
+            String ins1="SELECT id,name FROM customer\n" +
             "WHERE \"Contact\" = '"+contact1+"';";
             ps1 = connection.prepareStatement(ins1);
             //st.executeQuery(ins);
@@ -841,7 +834,8 @@ public class admin_choice extends javax.swing.JFrame {
             DefaultListModel listModel1 = new DefaultListModel();
             while(rs1.next()){
                 String data= rs1.getString("Name");
-                listModel1.addElement(data);
+                String id = rs1.getString("id");
+                listModel1.addElement(data+":-:"+id);
             }
             existingMember.setModel(listModel1);
 
