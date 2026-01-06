@@ -27,8 +27,8 @@
               <Component id="jPanel1" max="32767" attributes="0"/>
               <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jPanel2" alignment="1" max="32767" attributes="0"/>
-                  <Component id="jPanel3" alignment="1" max="32767" attributes="0"/>
+                  <Component id="jPanel3" max="32767" attributes="0"/>
+                  <Component id="jPanel2" max="32767" attributes="0"/>
               </Group>
           </Group>
       </Group>
@@ -55,7 +55,7 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jLabel11" alignment="1" max="32767" attributes="0"/>
+              <Component id="jLabel11" min="-2" pref="696" max="-2" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -92,9 +92,9 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
+                          <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="Address" min="-2" pref="51" max="-2" attributes="0"/>
                               <Component id="Contact" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -106,45 +106,41 @@
                               <Component id="FatherName" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="BookingDate" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="BookingTime" alignment="0" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="6" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <Component id="back" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="32767" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="bookingtime" alignment="0" max="32767" attributes="0"/>
-                              <Component id="bookingdate" alignment="0" max="32767" attributes="0"/>
-                              <Component id="occupation" alignment="0" max="32767" attributes="0"/>
-                              <Component id="nationalid" alignment="0" max="32767" attributes="0"/>
-                              <Component id="passportno" alignment="0" max="32767" attributes="0"/>
-                              <Component id="nationality" alignment="0" max="32767" attributes="0"/>
-                              <Component id="address" alignment="0" max="32767" attributes="0"/>
-                              <Component id="contact" alignment="0" max="32767" attributes="0"/>
-                              <Component id="name" alignment="0" max="32767" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="roomComboBox" min="-2" pref="137" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="checkContact" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" attributes="0">
+                                  <Component id="back" min="-2" max="-2" attributes="0"/>
+                                  <Component id="BookingTime" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="fathername" alignment="1" max="32767" attributes="0"/>
                           </Group>
-                          <EmptySpace pref="274" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="bookingtime" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="bookingdate" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="occupation" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="nationalid" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="passportno" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="nationality" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="address" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="contact" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="name" alignment="0" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="roomComboBox" min="-2" pref="137" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="checkContact" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Component id="fathername" alignment="1" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="add" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <Component id="add" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="Note" min="-2" pref="281" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
+                          <Component id="Note" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="83" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" min="-2" pref="311" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel3" alignment="0" min="-2" max="-2" attributes="0"/>
@@ -169,12 +165,13 @@
                                   <Component id="age" alignment="0" max="32767" attributes="0"/>
                                   <Component id="religion" alignment="0" max="32767" attributes="0"/>
                                   <Component id="purpose" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="member" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="member" alignment="0" min="-2" pref="149" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
+                      <Component id="jScrollPane1" min="-2" pref="295" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -196,7 +193,7 @@
                                   <Component id="checkContact" min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <EmptySpace pref="47" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="Name" alignment="1" min="-2" max="-2" attributes="0"/>
                               <Component id="name" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -271,7 +268,7 @@
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="ImageInfo" alignment="3" pref="32" max="32767" attributes="0"/>
+                              <Component id="ImageInfo" alignment="3" max="32767" attributes="0"/>
                               <Component id="imageInfo" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -298,13 +295,14 @@
                               <Component id="BookingTime" min="-2" max="-2" attributes="0"/>
                               <Component id="bookingtime" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="Note" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="add" alignment="3" min="-2" pref="27" max="-2" attributes="0"/>
                               <Component id="back" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="Note" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="0" pref="5" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
                           <EmptySpace max="32767" attributes="0"/>
@@ -635,10 +633,10 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel10" min="-2" pref="408" max="-2" attributes="0"/>
+                          <Component id="jLabel10" min="-2" pref="288" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                           <Component id="jLabel6" min="-2" pref="229" max="-2" attributes="0"/>
                       </Group>
                   </Group>
